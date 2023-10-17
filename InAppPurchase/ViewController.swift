@@ -15,15 +15,20 @@ public enum StoreError: Error {
 }
 
 class ViewController: UIViewController {
+    // MARK: - Properties
+    
     @IBOutlet weak var requestProductsButton: UIButton!
-    @IBOutlet weak var purchaseButton: UIButton!
-    @IBOutlet weak var isPurchasedButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var debugMessage: UITextView!
     var updateListenerTask: Task<Void, Error>? = nil
     var storeProducts = [Product]()
+    
+    // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -37,7 +42,7 @@ class ViewController: UIViewController {
         
         super.viewWillDisappear(animated)
     }
-    
+        
     func listenForTransactions() -> Task<Void, Error> {
         return Task.detached {
             for await result in Transaction.updates {
@@ -62,34 +67,25 @@ class ViewController: UIViewController {
     func requestProducts() async {
         do {
             /* 商品情報取得 */
-            self.storeProducts = try await Product.products(for: ["jp.co.bitz.Example.Consumable01", "jp.co.bitz.Example.Consumable02"])
+            self.storeProducts = try await Product.products(for: [
+                "jp.co.bitz.Example.Consumable01", "jp.co.bitz.Example.Consumable02",
+                "jp.co.bitz.Example.NonConsumable01", "jp.co.bitz.Example.NonConsumable02",
+                "jp.co.bitz.Example.AutoRenewableSubscription01", "jp.co.bitz.Example.AutoRenewableSubscription02"
+            ])
             for product in storeProducts {
                 appendDebugMessage(text: product.id + " " + product.type.rawValue + " " + product.displayPrice)
             }
+            tableView.reloadData()
         } catch {
             appendDebugMessage(text: "Failed product request: \(error)")
         }
     }
-    
-    @IBAction func purchaseAction() {
-        Task {
-            do {
-                if try await purchase() != nil {
-                    appendDebugMessage(text: "Success")
-                }
-            } catch StoreError.failedVerification {
-                appendDebugMessage(text: "Your purchase could not be verified by the App Store.")
-            } catch {
-                appendDebugMessage(text: "Failed product purchase: \(error)")
-            }
-        }
-    }
-    
-    func purchase() async throws -> Transaction? {
+        
+    func purchase(_ product: Product) async throws -> Transaction? {
         if self.storeProducts.isEmpty { return nil }
         do {
             /* 商品購入 */
-            let result = try await self.storeProducts[0].purchase()
+            let result = try await product.purchase()
             switch result {
             case .success(let verification):
                 let transaction = try checkVerified(verification)
@@ -106,33 +102,7 @@ class ViewController: UIViewController {
             return nil
         }
     }
-    
-    @IBAction func isPurchasedAction() {
-        if self.storeProducts.isEmpty { return }
-        let sku = storeProducts[0].id
-        Task {
-            do {
-                let result = try await self.isPurchased(sku)
-                if result {
-                    appendDebugMessage(text: "購入済み")
-                } else {
-                    appendDebugMessage(text: "未購入")
-                }
-            } catch {
-                appendDebugMessage(text: "Failed product purchase: \(error)")
-            }
-        }
-    }
-    
-    /* 購入済みか？ */
-    func isPurchased(_ productIdentifier: String) async throws -> Bool {
-        guard let result = await Transaction.latest(for: productIdentifier) else {
-            return false
-        }
-        let transaction = try checkVerified(result)
-        return transaction.revocationDate == nil && !transaction.isUpgraded
-    }
-    
+        
     func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
         switch result {
         case .unverified:
@@ -159,3 +129,41 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDataSource
+
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.storeProducts.count
+    }
+        
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "ProductCell") ?? UITableViewCell(style: .default, reuseIdentifier: "ProductCell")
+        cell.textLabel!.text = self.storeProducts[indexPath.row].displayName
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell: UITableViewCell = self.tableView(tableView, cellForRowAt: indexPath)
+        for product in storeProducts {
+            if cell.textLabel?.text == product.displayName {
+                print("\(product.displayName)")
+                Task {
+                    do {
+                        if try await purchase(product) != nil {
+                            appendDebugMessage(text: "Success")
+                        }
+                    } catch StoreError.failedVerification {
+                        appendDebugMessage(text: "Your purchase could not be verified by the App Store.")
+                    } catch {
+                        appendDebugMessage(text: "Failed product purchase: \(error)")
+                    }
+                }
+            }
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
