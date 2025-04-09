@@ -24,6 +24,7 @@
 		569D61C42754EB3D00D09F78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		569D61C72754EB3D00D09F78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		569D61C92754EB3D00D09F78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56B723922DA5FA250096DFB2 /* BitzExampleConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = BitzExampleConfiguration.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +41,7 @@
 		569D61AF2754EB3A00D09F78 = {
 			isa = PBXGroup;
 			children = (
+				56B723922DA5FA250096DFB2 /* BitzExampleConfiguration.storekit */,
 				569D61BA2754EB3A00D09F78 /* InAppPurchase */,
 				569D61B92754EB3A00D09F78 /* Products */,
 			);

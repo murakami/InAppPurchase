@@ -16,13 +16,14 @@ public enum StoreError: Error {
 
 class ViewController: UIViewController {
     // MARK: - Properties
-    
+
     @IBOutlet weak var requestProductsButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var debugMessage: UITextView!
     var updateListenerTask: Task<Void, Error>? = nil
     var storeProducts = [Product]()
-    
+    var purchasedProductIDs = Set<String>()
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -30,19 +31,20 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // Original StoreKitの課金キューにオブザーバーを追加に相当する
         updateListenerTask = listenForTransactions()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         updateListenerTask?.cancel()
         
         super.viewWillDisappear(animated)
     }
-        
+
     func listenForTransactions() -> Task<Void, Error> {
         return Task.detached {
             for await result in Transaction.updates {
@@ -50,17 +52,28 @@ class ViewController: UIViewController {
                 do {
                     let transaction = try await self.checkVerified(result)
                     await transaction.finish()
-                    await self.appendDebugMessage(text: "処理待ちの購入完了")
+                    await self.appendDebugMessage(text: "処理待ちの購入完了[\(transaction.productID)]")
+                    await self.appendDebugMessage(text: "購入アイテム: \(self.purchasedProductIDs)")
                 } catch {
                     await self.appendDebugMessage(text: "Transaction failed verification")
                 }
             }
         }
     }
-    
+
     @IBAction func requestProductsAction() {
         Task {
             await requestProducts()
+        }
+    }
+
+    @IBAction func restorePurchasesAction() {
+        Task {
+            do {
+                try await AppStore.sync()
+            } catch {
+                self.appendDebugMessage(text: "\(error)")
+            }
         }
     }
 
@@ -80,7 +93,7 @@ class ViewController: UIViewController {
             appendDebugMessage(text: "Failed product request: \(error)")
         }
     }
-        
+
     func purchase(_ product: Product) async throws -> Transaction? {
         if self.storeProducts.isEmpty { return nil }
         do {
@@ -90,6 +103,7 @@ class ViewController: UIViewController {
             case .success(let verification):
                 let transaction = try checkVerified(verification)
                 await transaction.finish()
+                await self.refreshPurchasedProducts()
                 appendDebugMessage(text: "購入完了")
                 return transaction
             case .userCancelled, .pending:
@@ -102,7 +116,7 @@ class ViewController: UIViewController {
             return nil
         }
     }
-        
+
     func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
         switch result {
         case .unverified:
@@ -111,6 +125,26 @@ class ViewController: UIViewController {
         case .verified(let safe):
             appendDebugMessage(text: "レシート検証に成功")
             return safe
+        }
+    }
+
+    func refreshPurchasedProducts() async {
+        // Iterate through the user's purchased products.
+        for await verificationResult in Transaction.currentEntitlements {
+            switch verificationResult {
+            case .verified(let transaction):
+                // Check the type of product for the transaction
+                // and provide access to the content as appropriate.
+                if transaction.revocationDate == nil {
+                    self.purchasedProductIDs.insert(transaction.productID)
+                } else {
+                    self.purchasedProductIDs.remove(transaction.productID)
+                }
+            case .unverified(let unverifiedTransaction, let verificationError):
+                // Handle unverified transactions based on your
+                // business model.
+                appendDebugMessage(text: "unverified[\(unverifiedTransaction.productID)]: \(verificationError)")
+            }
         }
     }
 
@@ -135,7 +169,7 @@ extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.storeProducts.count
     }
-        
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "ProductCell") ?? UITableViewCell(style: .default, reuseIdentifier: "ProductCell")
         cell.textLabel!.text = self.storeProducts[indexPath.row].displayName

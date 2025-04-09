@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AaF-2p-XsH">
-                                <rect key="frame" x="20" y="48" width="150.5" height="34.5"/>
+                                <rect key="frame" x="20" y="96" width="150.5" height="34.5"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="requestProducts"/>
                                 <connections>
@@ -26,14 +26,14 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="In-app Purchase" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3jt-Na-0eh">
-                                <rect key="frame" x="20" y="269" width="374" height="593"/>
+                                <rect key="frame" x="20" y="317" width="374" height="511"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="07M-sH-Clb">
-                                <rect key="frame" x="20" y="90" width="374" height="171"/>
+                                <rect key="frame" x="20" y="138" width="374" height="171"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="171" id="535-Ky-wXq"/>
@@ -41,6 +41,14 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="171" id="l9j-tV-13v"/>
                                 </constraints>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VOh-F3-8j5">
+                                <rect key="frame" x="236" y="96" width="158" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="restorePurchases"/>
+                                <connections>
+                                    <action selector="restorePurchasesAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bsp-ud-keQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -49,6 +57,8 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="AaF-2p-XsH" secondAttribute="trailing" symbolic="YES" id="EY7-An-IDZ"/>
                             <constraint firstItem="07M-sH-Clb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="FvP-kf-OrS"/>
                             <constraint firstItem="3jt-Na-0eh" firstAttribute="top" secondItem="07M-sH-Clb" secondAttribute="bottom" constant="8" symbolic="YES" id="RLQ-uK-kR7"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="VOh-F3-8j5" secondAttribute="trailing" constant="20" id="WRf-cW-L57"/>
+                            <constraint firstItem="VOh-F3-8j5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="aoX-Rj-sm4"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="07M-sH-Clb" secondAttribute="trailing" constant="20" id="bkx-S5-808"/>
                             <constraint firstItem="3jt-Na-0eh" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="c4N-cz-5Om"/>
                             <constraint firstItem="AaF-2p-XsH" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="lFR-wm-9AR"/>
