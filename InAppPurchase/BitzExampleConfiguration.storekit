@@ -1,0 +1,204 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "F04341DD",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "1597726532",
+      "localizations" : [
+        {
+          "description" : "jp.co.bitz.Example.Consumable01",
+          "displayName" : "Consumable01",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "jp.co.bitz.Example.Consumable01",
+      "referenceName" : "jp.co.bitz.Example.Consumable01",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "1597726776",
+      "localizations" : [
+        {
+          "description" : "jp.co.bitz.Example.Consumable02",
+          "displayName" : "Consumable02",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "jp.co.bitz.Example.Consumable02",
+      "referenceName" : "jp.co.bitz.Example.Consumable02",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "6468486481",
+      "localizations" : [
+        {
+          "description" : "NonConsumable01",
+          "displayName" : "NonConsumable01",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "jp.co.bitz.Example.NonConsumable01",
+      "referenceName" : "jp.co.bitz.Example.NonConsumable01",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "6468486418",
+      "localizations" : [
+        {
+          "description" : "NonConsumable02",
+          "displayName" : "NonConsumable02",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "jp.co.bitz.Example.NonConsumable02",
+      "referenceName" : "jp.co.bitz.Example.NonConsumable02",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "1597726387",
+    "_developerTeamID" : "XKY95WKF3J",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 765851264.56486404,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21394998",
+      "localizations" : [
+
+      ],
+      "name" : "jp.co.bitz.Example.SubscriptionGroup01",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "0.49",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6468486551",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "AutoRenewableSubscription01",
+              "displayName" : "AutoRenewableSubscription01",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "jp.co.bitz.Example.AutoRenewableSubscription01",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "jp.co.bitz.Example.AutoRenewableSubscription01",
+          "subscriptionGroupID" : "21394998",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "6.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6468486578",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "AutoRenewableSubscription02",
+              "displayName" : "AutoRenewableSubscription02",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "jp.co.bitz.Example.AutoRenewableSubscription02",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "jp.co.bitz.Example.AutoRenewableSubscription02",
+          "subscriptionGroupID" : "21394998",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}
